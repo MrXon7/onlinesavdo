@@ -19,6 +19,15 @@ class CartItem {
       'quantity': quantity,
     };
   }
+
+  factory CartItem.fromJson(Map<String, dynamic> json) {
+    return CartItem(
+      // Replace these fields with the actual fields in your CartItem class
+      id: json['id'],
+      product: json['product'],
+      quantity: json['quantity'],
+    );
+  }
 }
 
 class CartProvider with ChangeNotifier {

@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:online_savdo/core/constants/colors.dart';
 import 'package:online_savdo/data/models/user_model.dart';
+import 'package:online_savdo/presentation/pages/aboutUser.dart';
 import 'package:online_savdo/presentation/pages/orders_page.dart';
-import 'package:online_savdo/presentation/providers/auth_provider.dart';
+import 'package:online_savdo/presentation/providers/user_provider.dart';
 import 'package:online_savdo/presentation/widgets/profile_item.dart';
 import 'package:provider/provider.dart';
 
@@ -29,16 +30,16 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Consumer<AuthProvider>(
+        body: Consumer<UserProvider>(
           builder: (context, userProvider, child) {
-            if (userProvider.userData == null) {
+            if (userProvider.user == null) {
               return Center(
                 child: CircularProgressIndicator(
                   color: SweetShopColors.accent,
                 ),
               );
             }
-            final user = userProvider.userData!;
+            final user = userProvider.user!;
 
             return SingleChildScrollView(
               padding: EdgeInsets.all(16),
@@ -56,6 +57,9 @@ class _ProfileState extends State<Profile> {
                       icon: Icons.person_outline,
                       title: "Shaxsiy ma'lumotlar",
                       onTap: () {
+                        Navigator.push(context, 
+                            MaterialPageRoute(
+                                builder: (context) => AboutUser()));
                         // shaxsiy ma'lumotlarga o'tish
                       },
                     ),
