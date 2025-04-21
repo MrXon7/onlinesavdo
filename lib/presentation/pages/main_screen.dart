@@ -6,14 +6,15 @@ import 'package:online_savdo/presentation/pages/home_page.dart';
 import 'package:online_savdo/presentation/pages/profile.dart';
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+  final int initialIndex; // Dastlabki sahifa indeksi
+  const MainScreen({super.key, this.initialIndex = 0});
 
   @override
   State<MainScreen> createState() => _MainScreenState();
 }
 
 class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
-  int _currentIndex = 0;
+  int _currentIndex = 0; // Dastlabki sahifa indeksi
   late final List<Widget> _pages;
   late final List<AnimationController> _animationControllers;
   late final List<Animation<double>> _animations;
@@ -21,6 +22,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    _currentIndex = widget.initialIndex; // Dastlabki sahifa indeksi
 
     // Sahifalarni yaratish
     _pages = const [HomePage(), BrowsePage(), CartPage(), Profile()];

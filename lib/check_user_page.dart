@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:online_savdo/core/constants/colors.dart';
+import 'package:online_savdo/presentation/pages/admin_pages/admin_home.dart';
 import 'package:online_savdo/presentation/pages/main_screen.dart';
 import 'package:online_savdo/presentation/providers/auth_provider.dart';
 import 'package:online_savdo/signup_page.dart';
@@ -20,7 +21,7 @@ class CheckUserPage extends StatelessWidget {
     } else if (authProvider.userData == null) {
       return const SignupPage();
     } else {
-      return const MainScreen();
+      return const AdminHomeScreen();
     }
   }
 }

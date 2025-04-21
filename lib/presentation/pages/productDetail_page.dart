@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:online_savdo/core/constants/colors.dart';
 import 'package:online_savdo/data/models/product_model.dart';
 import 'package:online_savdo/presentation/pages/cart_page.dart';
+import 'package:online_savdo/presentation/pages/main_screen.dart';
 import 'package:online_savdo/presentation/providers/auth_provider.dart';
 import 'package:online_savdo/presentation/providers/cart_provider.dart';
 import 'package:provider/provider.dart';
@@ -104,7 +105,7 @@ class ProductDetailPage extends StatelessWidget {
                                                 height: 50,
                                                 child: ElevatedButton(
                                                   onPressed: () {
-                                                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CartPage()));
+                                                    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => MainScreen(initialIndex: 2,)) , (route) => false);
                                                   },
                                                   style: ElevatedButton.styleFrom(
                                                       backgroundColor: SweetShopColors.accent,

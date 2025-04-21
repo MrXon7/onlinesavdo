@@ -3,17 +3,17 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:online_savdo/core/constants/colors.dart';
 import 'package:online_savdo/data/models/product_model.dart';
 import 'package:online_savdo/presentation/providers/search_provider.dart';
-import 'package:online_savdo/presentation/widgets/product_card.dart';
+import 'package:online_savdo/presentation/widgets/adm_pruduct_cart.dart';
 import 'package:provider/provider.dart';
 
-class BrowsePage extends StatefulWidget {
-  const BrowsePage({super.key});
+class AdmSearch extends StatefulWidget {
+  const AdmSearch({super.key});
 
   @override
-  State<BrowsePage> createState() => _BrowsePageState();
+  State<AdmSearch> createState() => _AdmSearchState();
 }
 
-class _BrowsePageState extends State<BrowsePage> {
+class _AdmSearchState extends State<AdmSearch> {
   final TextEditingController _searchController = TextEditingController();
 
   @override
@@ -126,16 +126,7 @@ class _BrowsePageState extends State<BrowsePage> {
   Widget _buildSearchResults(List<Product> products) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: GridView.builder(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              crossAxisSpacing: 16,
-              mainAxisSpacing: 16,
-              childAspectRatio: 0.7),
-          itemCount: products.length,
-          itemBuilder: (context, index) {
-            return ProductCard(product: products[index]);
-          }),
+      child: Adm_product_cart(products: products)
     );
   }
 }

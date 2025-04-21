@@ -22,7 +22,7 @@ class _AdmOrdersScreenState extends State<AdmOrdersScreen> {
     return RefreshIndicator(
       onRefresh: () async {
         // ADMIN uchun alohida buyurtmalarni yuklab olish f-ya si yaratiladi
-        // await ordersProvider.fetchOrders();
+        await ordersProvider.fetchAllOrders();
       },
       child: Scaffold(
           // appBar: AppBar(
@@ -61,13 +61,13 @@ class _AdmOrdersScreenState extends State<AdmOrdersScreen> {
                   orders: ordersProvider.delivredOrders,
                   statusColor: Colors.orange,
                 ),
-                const SizedBox(height: 16),
-                _buildStatusGroup(
-                  context,
-                  title: "Bekor qilingan buyurtmalar",
-                  orders: ordersProvider.cancelledOrders,
-                  statusColor: Colors.orange,
-                ),
+                // const SizedBox(height: 16),
+                // _buildStatusGroup(
+                //   context,
+                //   title: "Bekor qilingan buyurtmalar",
+                //   orders: ordersProvider.cancelledOrders,
+                //   statusColor: Colors.orange,
+                // ),
               ],
             ),
           )),
@@ -92,7 +92,6 @@ class _AdmOrdersScreenState extends State<AdmOrdersScreen> {
            setState(() {
             _expansionStates[orders[index].id] =
                 !_expansionStates[orders[index].id]!;
-            // isExpanded = !isExpanded;
           });
           }
           

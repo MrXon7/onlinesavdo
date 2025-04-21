@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:online_savdo/core/constants/colors.dart';
 import 'package:online_savdo/presentation/pages/admin_pages/adm_orders_screen.dart';
+import 'package:online_savdo/presentation/pages/admin_pages/adm_search.dart';
 import 'package:online_savdo/presentation/pages/admin_pages/productsScreen.dart';
 import 'package:online_savdo/presentation/pages/admin_pages/settings.dart';
 import 'package:online_savdo/presentation/pages/main_screen.dart';
@@ -38,7 +39,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<ProductProvider>(context, listen: false).fetchPrducts();
-      // Provider.of<OrderProvider>(context, listen: false).fetchOrders();
+      Provider.of<OrderProvider>(context, listen: false).fetchAllOrders();
     });
   }
 
@@ -46,6 +47,13 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          IconButton(icon: Icon(Icons.search), onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const AdmSearch()));
+          }),
+          SizedBox(width: 10),
+        ],
         leading: IconButton(
             onPressed: () {
               Navigator.push(context,

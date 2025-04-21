@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:online_savdo/data/models/order_model.dart';
 import 'package:intl/intl.dart';
+import 'package:online_savdo/presentation/pages/productDetail_page.dart';
 import 'package:online_savdo/presentation/providers/order_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -73,31 +74,36 @@ class OrderCart extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             ...order.items
-                .map((item) => ListTile(
-                      leading: Image.network(
-                        item.product.imageUrl,
-                        width: 50,
-                        height: 50,
-                        errorBuilder: (context, error, stackTrace) => Container(
+                .map((item) => GestureDetector(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ProductDetailPage(product: item.product, isAdmin: false,)));
+                  },
+                  child: ListTile(
+                        leading: Image.network(
+                          item.product.imageUrl,
                           width: 50,
                           height: 50,
-                          color: Colors.grey[200],
-                          child: const Icon(Icons.image),
+                          errorBuilder: (context, error, stackTrace) => Container(
+                            width: 50,
+                            height: 50,
+                            color: Colors.grey[200],
+                            child: const Icon(Icons.image),
+                          ),
+                        ),
+                        title: Text(
+                          item.product.name,
+                          style: GoogleFonts.inter(),
+                        ),
+                        subtitle: Text(
+                          "${NumberFormat('#,###').format(item.price)} so'm",
+                          style: GoogleFonts.inter(),
+                        ),
+                        trailing: Text(
+                          "${NumberFormat('#,###').format(item.price * item.quantity)} so'm",
+                          style: GoogleFonts.inter(),
                         ),
                       ),
-                      title: Text(
-                        item.product.name,
-                        style: GoogleFonts.inter(),
-                      ),
-                      subtitle: Text(
-                        "${NumberFormat('#,###').format(item.price)} so'm",
-                        style: GoogleFonts.inter(),
-                      ),
-                      trailing: Text(
-                        "${NumberFormat('#,###').format(item.price * item.quantity)} so'm",
-                        style: GoogleFonts.inter(),
-                      ),
-                    ))
+                ))
                 .toList(),
             const SizedBox(height: 16),
             if (order.status == OrderStatus.pending)

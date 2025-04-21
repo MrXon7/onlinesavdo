@@ -10,9 +10,10 @@ class OrderProvider with ChangeNotifier {
   List<MyOrder> get orders => [..._orders];
 
   List<MyOrder> get pendingingOrders =>
-      _orders.where((order) => order.status == OrderStatus.pending).toList();
-  List<MyOrder> get proccessingOrders => _orders
-      .where((order) => order.status == OrderStatus.processing)
+      _orders.where((order) => order.status == OrderStatus.pending)
+      .toList();
+  List<MyOrder> get proccessingOrders => 
+  _orders.where((order) => order.status == OrderStatus.processing)
       .toList(); // Jarayonda
   List<MyOrder> get shippedOrders => _orders
       .where((order) => order.status == OrderStatus.shipped)
@@ -23,6 +24,21 @@ class OrderProvider with ChangeNotifier {
   List<MyOrder> get cancelledOrders => _orders
       .where((order) => order.status == OrderStatus.cancelled)
       .toList(); // Bekor qilindi
+
+  // Barcha buyurtmalarni yuklash
+  Future<void> fetchAllOrders() async {
+    // API dan buyurtmalarni yuklash
+    try {
+      final doc = await FirebaseFirestore.instance.collection('orders').get();
+      _orders = doc.docs
+          .map((orderDoc) => MyOrder.fromMap(orderDoc.data()))
+          .toList();
+      notifyListeners();
+    } catch (e) {
+      print("Errorim mening: $e");
+    }
+    notifyListeners();
+  }
 
   Future<void> fetchOrders(String userId) async {
     // API dan buyurtmalarni yuklash
@@ -108,14 +124,16 @@ class OrderProvider with ChangeNotifier {
               .collection('orders')
               .doc(orderId)
               .delete();
+              notifyListeners();
         }else{
+          _orders[index] = _orders[index].copyWith(status: status);
             await FirebaseFirestore.instance
             .collection('orders')
             .doc(orderId)
             .update(_orders[index].toMap());
-        _orders[index] = _orders[index].copyWith(status: status);
-        }
+        
         notifyListeners();
+        }
       }
     } catch (e) {
       print("Error: $e");

@@ -23,8 +23,10 @@ class AdmOrderCart extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SizedBox(),
-                _buildStatusAction(context, order,
-                    Provider.of<OrderProvider>(context, listen: false)),
+                _buildStatusAction(
+                  context,
+                  order,
+                ),
               ],
             ),
             SizedBox(height: 8),
@@ -118,8 +120,7 @@ class AdmOrderCart extends StatelessWidget {
     );
   }
 
-  Widget _buildStatusAction(
-      BuildContext context, MyOrder order, OrderProvider orderProvider) {
+  Widget _buildStatusAction(BuildContext context, MyOrder order) {
     return Wrap(
       spacing: 4.0,
       runSpacing: 4,
@@ -129,8 +130,12 @@ class AdmOrderCart extends StatelessWidget {
           Row(
             children: [
               ElevatedButton(
-                onPressed: () => _updateStatus(
-                    context, order, OrderStatus.processing, orderProvider),
+                onPressed: () {
+                  _updateStatus(context, order, OrderStatus.processing);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green,
+                ),
                 child: Text(
                   "Qabul qilish",
                   style: GoogleFonts.inter(
@@ -140,23 +145,20 @@ class AdmOrderCart extends StatelessWidget {
                         : Color(0xFFFFFFFF),
                   ),
                 ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
-                ),
               ),
               SizedBox(width: 8),
               ElevatedButton(
-                onPressed: () => _updateStatus(
-                    context, order, OrderStatus.cancelled, orderProvider),
+                onPressed: () =>
+                    _updateStatus(context, order, OrderStatus.cancelled),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                ),
                 child: Text(
                   "Rad etish",
                   style: GoogleFonts.inter(
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red,
                 ),
               ),
             ],
@@ -165,8 +167,10 @@ class AdmOrderCart extends StatelessWidget {
         // Buyurtmani jo'natish
         if (order.status == OrderStatus.processing)
           ElevatedButton(
-            onPressed: () => _updateStatus(
-                context, order, OrderStatus.shipped, orderProvider),
+            onPressed: () => _updateStatus(context, order, OrderStatus.shipped),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: order.statusColor,
+            ),
             child: Text(
               "Buyurtmani jo'natish",
               style: GoogleFonts.inter(
@@ -176,15 +180,15 @@ class AdmOrderCart extends StatelessWidget {
                     : Color(0xFFFFFFFF),
               ),
             ),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: order.statusColor,
-            ),
           ),
         // Buyurtmani yetkazilganini tasdiqlash
         if (order.status == OrderStatus.shipped)
           ElevatedButton(
-            onPressed: () => _updateStatus(
-                context, order, OrderStatus.delivred, orderProvider),
+            onPressed: () =>
+                _updateStatus(context, order, OrderStatus.delivred),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: order.statusColor,
+            ),
             child: Text(
               "Buyurtma yetkazildi",
               style: GoogleFonts.inter(
@@ -194,18 +198,34 @@ class AdmOrderCart extends StatelessWidget {
                     : Color(0xFFFFFFFF),
               ),
             ),
+          ),
+        if(order.status == OrderStatus.delivred)
+          ElevatedButton(
+            onPressed: () =>
+                _updateStatus(context, order, OrderStatus.cancelled),
             style: ElevatedButton.styleFrom(
-              backgroundColor: order.statusColor,
+              backgroundColor: Colors.red,
+            ),
+            child: Text(
+              "O'chirish",
+              style: GoogleFonts.inter(
+                fontWeight: FontWeight.bold,
+                color: order.statusColor.computeLuminance() > 0.5
+                    ? Color(0xFF000000)
+                    : Color(0xFFFFFFFF),
+              ),
             ),
           ),
       ],
     );
   }
 
-  Future<void> _updateStatus(BuildContext context, MyOrder order,
-      OrderStatus status, OrderProvider orderProvider) async {
+  Future<void> _updateStatus(
+      BuildContext context, MyOrder order, OrderStatus status) async {
     try {
-      await orderProvider.updateOrderStatus(order.id, status);
+      await Provider.of<OrderProvider>(context, listen: false)
+          .updateOrderStatus(order.id, status);
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text("Buyurtma holati yangilandi"),
