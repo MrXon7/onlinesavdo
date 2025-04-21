@@ -8,23 +8,8 @@ import 'package:online_savdo/presentation/providers/user_provider.dart';
 import 'package:online_savdo/presentation/widgets/profile_item.dart';
 import 'package:provider/provider.dart';
 
-class Profile extends StatefulWidget {
+class Profile extends StatelessWidget {
   const Profile({super.key});
-
-  @override
-  State<Profile> createState() => _ProfileState();
-}
-
-class _ProfileState extends State<Profile> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    // Sahifa yuklanganida foydalanuvchi ma'lumotlarini olamiz
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      // Provider.of<UserProvider>(context, listen: false).loadUserData();
-    });
-  }
 
   @override
   Widget build(BuildContext context) {

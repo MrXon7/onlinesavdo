@@ -30,7 +30,7 @@ class UserProvider with ChangeNotifier {
     _user = User(
       id: _user!.id,
       name: Field == 'name' ? newUserData : _user!.name,
-      phone: Field == 'phone' ? newUserData : _user!.phone,
+      phone: Field == 'phone' ? "+998$newUserData" : _user!.phone,
       address: Field == 'address' ? newUserData : _user!.address, 
       cartItems: Field == 'cartItems' ? (newUserData as List).map((item) => CartItem.fromJson(item)).toList() : _user!.cartItems,
     );

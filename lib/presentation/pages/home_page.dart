@@ -61,7 +61,7 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: SweetShopColors.cardBackground,
       appBar: AppBar(
         title: Text(
-          'Hello ${user.name}',
+          'Salom ${user.name}',
           style: GoogleFonts.inter(
             color: SweetShopColors.textDark,
             fontSize: 32.0,
