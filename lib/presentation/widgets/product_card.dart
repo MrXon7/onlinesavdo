@@ -19,7 +19,8 @@ class ProductCard extends StatelessWidget {
             context,
             MaterialPageRoute(
                 builder: (context) => ProductDetailPage(
-                      product: product,isAdmin: false,
+                      product: product,
+                      isAdmin: false,
                     )));
       },
       child: Column(
@@ -53,8 +54,9 @@ class ProductCard extends StatelessWidget {
                 Text(
                   product.name,
                   style: GoogleFonts.inter(
-                    fontWeight: FontWeight.bold, // Maximum qalinlik
-                  ),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18 // Maximum qalinlik
+                      ),
                 ),
                 Text(
                   product.description,

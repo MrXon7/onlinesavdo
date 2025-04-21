@@ -159,8 +159,13 @@ class ProductDetailPage extends StatelessWidget {
                         },
                         child: cart.isLoading
                             ? Center(
-                                child: CircularProgressIndicator(
-                                    color: Colors.white))
+                                child: SizedBox(
+                                  height: 15,
+                                  width: 15,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                  ),
+                                ))
                             : Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [

@@ -135,8 +135,8 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
               label: 'Qidirish',
             ),
             BottomNavigationBarItem(
-              icon: Badge(child: Icon(Icons.shopping_cart_outlined)),
-              activeIcon: Badge(child: Icon(Icons.shopping_cart)),
+              icon: Icon(Icons.shopping_cart_outlined),
+              activeIcon: Icon(Icons.shopping_cart),
               label: 'Savatcha',
             ),
             BottomNavigationBarItem(

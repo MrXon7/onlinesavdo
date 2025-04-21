@@ -102,29 +102,23 @@ class OrderProvider with ChangeNotifier {
       // misol uchun buyurtma holatini yangilash
       final index = _orders.indexWhere((order) => order.id == orderId);
       if (index >= 0) {
-        await FirebaseFirestore.instance
-        .collection('orders')
-        .doc(orderId)
-        .update(_orders[index].toMap());
+        if (status == OrderStatus.cancelled) {
+          _orders.removeAt(index);
+          await FirebaseFirestore.instance
+              .collection('orders')
+              .doc(orderId)
+              .delete();
+        }else{
+            await FirebaseFirestore.instance
+            .collection('orders')
+            .doc(orderId)
+            .update(_orders[index].toMap());
         _orders[index] = _orders[index].copyWith(status: status);
+        }
         notifyListeners();
       }
     } catch (e) {
       print("Error: $e");
     }
   }
-
-
-  // Buyurtmani bekor qilish
-  // Future<void> cancelOrder(String orderId) async {
-  //   final index = _orders.indexWhere((order) => order.id == orderId);
-  //   if (index >= 0) {
-  //     // _orders.removeAt(index);
-  //     _orders[index] = _orders[index].copyWith(
-  //       status: OrderStatus.cancelled,
-  //     );
-  //     notifyListeners();
-  //       // API ga malumotlarni yangiash
-  //   }
-  // }
 }

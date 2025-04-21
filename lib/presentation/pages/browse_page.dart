@@ -35,7 +35,8 @@ class _BrowsePageState extends State<BrowsePage> {
   void _onSearchChanged() {
     final query = _searchController.text.trim();
     // Providerga qidiruv so'rovini yuborish
-    Provider.of<SearchProvider>(context, listen: false).searchProducts(query);
+    Provider.of<SearchProvider>(context, listen: false)
+        .searchProducts(context, query);
   }
 
   @override
@@ -70,43 +71,43 @@ class _BrowsePageState extends State<BrowsePage> {
           if (searchProvider.searchResaults.isEmpty) {
             return _buildNoResoults();
           }
-          final List<Product> buildRecommendedItems = [
-            Product(
-                name: 'Sample Product',
-                description: 'This is a sample product description.',
-                price: 100.0,
-                id: '1212',
-                imageUrl:
-                    "https://png.pngtree.com/png-vector/20231019/ourmid/pngtree-traditional-indian-mithai-png-image_10212114.png",
-                categorie: "Tort"),
-            Product(
-                name: 'Sample Product',
-                description: 'This is a sample product description.',
-                price: 100.0,
-                id: '1212',
-                imageUrl:
-                    "https://png.pngtree.com/png-vector/20231019/ourmid/pngtree-traditional-indian-mithai-png-image_10212114.png",
-                categorie: "Tort"),
-            Product(
-                name: 'Sample Product',
-                description: 'This is a sample product description.',
-                price: 100.0,
-                id: '1212',
-                imageUrl:
-                    "https://png.pngtree.com/png-vector/20231019/ourmid/pngtree-traditional-indian-mithai-png-image_10212114.png",
-                categorie: "Tort"),
-            Product(
-                name: 'Sample Product',
-                description: 'This is a sample product description.',
-                price: 100.0,
-                id: '1212',
-                imageUrl:
-                    "https://png.pngtree.com/png-vector/20231019/ourmid/pngtree-traditional-indian-mithai-png-image_10212114.png",
-                categorie: "Tort"),
-          ];
+          // final List<Product> buildRecommendedItems = [
+          //   Product(
+          //       name: 'Sample Product',
+          //       description: 'This is a sample product description.',
+          //       price: 100.0,
+          //       id: '1212',
+          //       imageUrl:
+          //           "https://png.pngtree.com/png-vector/20231019/ourmid/pngtree-traditional-indian-mithai-png-image_10212114.png",
+          //       categorie: "Tort"),
+          //   Product(
+          //       name: 'Sample Product',
+          //       description: 'This is a sample product description.',
+          //       price: 100.0,
+          //       id: '1212',
+          //       imageUrl:
+          //           "https://png.pngtree.com/png-vector/20231019/ourmid/pngtree-traditional-indian-mithai-png-image_10212114.png",
+          //       categorie: "Tort"),
+          //   Product(
+          //       name: 'Sample Product',
+          //       description: 'This is a sample product description.',
+          //       price: 100.0,
+          //       id: '1212',
+          //       imageUrl:
+          //           "https://png.pngtree.com/png-vector/20231019/ourmid/pngtree-traditional-indian-mithai-png-image_10212114.png",
+          //       categorie: "Tort"),
+          //   Product(
+          //       name: 'Sample Product',
+          //       description: 'This is a sample product description.',
+          //       price: 100.0,
+          //       id: '1212',
+          //       imageUrl:
+          //           "https://png.pngtree.com/png-vector/20231019/ourmid/pngtree-traditional-indian-mithai-png-image_10212114.png",
+          //       categorie: "Tort"),
+          // ];
 
           // Natijalarni ko'rsatish uchun
-          return _buildSearchResults(buildRecommendedItems);
+          return _buildSearchResults(searchProvider.searchResaults);
         },
       ),
     );
@@ -158,15 +159,18 @@ class _BrowsePageState extends State<BrowsePage> {
 
 // Qidiruv natijalarini ko'rsatish Natijalarni ko'rsatish
   Widget _buildSearchResults(List<Product> products) {
-    return GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 16,
-            mainAxisSpacing: 16,
-            childAspectRatio: 0.7),
-        itemCount: products.length,
-        itemBuilder: (context, index) {
-          return ProductCard(product: products[index]);
-        });
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: GridView.builder(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 16,
+              mainAxisSpacing: 16,
+              childAspectRatio: 0.7),
+          itemCount: products.length,
+          itemBuilder: (context, index) {
+            return ProductCard(product: products[index]);
+          }),
+    );
   }
 }

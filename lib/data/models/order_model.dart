@@ -88,7 +88,7 @@ class MyOrder {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'orderDate': orderDate.toIso8601String(),
+      'orderDate': orderDate,
       'items': items.map((item) => item.toMap()).toList(),
       'totalAmount': totalAmount,
       'status': status.toString(),
@@ -102,7 +102,7 @@ class MyOrder {
   factory MyOrder.fromMap(Map<String, dynamic> map) {
     return MyOrder(
       id: map['id'] as String,
-      orderDate: (map['orderDate'] as Timestamp).toDate(),
+      orderDate: (map['orderDate']! as Timestamp).toDate(),
       items: (map['items'] as List<dynamic>)
           .map((item) => OrderItem.fromMap(item as Map<String, dynamic>))
           .toList(),

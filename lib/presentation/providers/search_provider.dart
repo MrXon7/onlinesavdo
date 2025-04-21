@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:online_savdo/data/models/product_model.dart';
+import 'package:online_savdo/presentation/providers/product_provider.dart';
+import 'package:provider/provider.dart';
 
 class SearchProvider with ChangeNotifier {
   // final ProductRepository _productRepository;
@@ -18,7 +20,7 @@ class SearchProvider with ChangeNotifier {
   String get errorMessage => _errorMessage;
 
   // Mahsulotni qidirish metodi
-  Future<void> searchProducts(String query) async {
+  Future<void> searchProducts(BuildContext context, String query) async {
     if (query.isEmpty) {
       _searchResaults = [];
       _searchQurey = '';
@@ -32,10 +34,15 @@ class SearchProvider with ChangeNotifier {
 
     try {
       // Barcha mahsulotlarni olish
-      // final allProducts =
-      //     []; // final allProducts = await _productRepository.getAllProducts();
-
+      final productProvider = Provider.of<ProductProvider>(context, listen: false);
+      
       // So'rovga moslarini filtirlami
+      _searchResaults=productProvider.products.where((product)=>
+        product.name.toLowerCase().contains(query.toLowerCase()) ||
+        product.description.toLowerCase().contains(query.toLowerCase()) ||
+        product.categorie.toLowerCase().contains(query.toLowerCase())
+      ).toList(); 
+      
     } catch (e) {
       _errorMessage = "Qidiruvda xatolik${e.toString()}";
     } finally {

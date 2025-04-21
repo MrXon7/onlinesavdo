@@ -5,23 +5,8 @@ import 'package:online_savdo/presentation/providers/order_provider.dart';
 import 'package:online_savdo/presentation/widgets/order_cart.dart';
 import 'package:provider/provider.dart';
 
-class OrdersPage extends StatefulWidget {
+class OrdersPage extends StatelessWidget {
   const OrdersPage({super.key});
-
-  @override
-  State<OrdersPage> createState() => _OrdersPageState();
-}
-
-class _OrdersPageState extends State<OrdersPage> {
-  // @override
-  // void initState() {
-  //   // TODO: implement initState
-  //   super.initState();
-  //   WidgetsBinding.instance.addPostFrameCallback((_) {
-  //     final authProvider = Provider.of<AuthProvider>(context, listen: false);
-  //     Provider.of<OrderProvider>(context, listen: false).fetchOrders(authProvider.telegramId!);
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +16,7 @@ class _OrdersPageState extends State<OrdersPage> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          "Mening Buyurtmalari",
+          "Mening Buyurtmalarim",
           style: GoogleFonts.inter(fontWeight: FontWeight.bold),
         ),
       ),
