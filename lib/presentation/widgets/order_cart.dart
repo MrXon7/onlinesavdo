@@ -30,7 +30,8 @@ class OrderCart extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       color: order.statusColor.computeLuminance() > 0.5
                           ? Color(0xFF000000)
-                          : Color(0xFFFFFFFF), // Replace with your desired color
+                          : Color(
+                              0xFFFFFFFF), // Replace with your desired color
                     ),
                   ),
                   backgroundColor: order.statusColor,
@@ -75,15 +76,22 @@ class OrderCart extends StatelessWidget {
             ),
             ...order.items
                 .map((item) => GestureDetector(
-                  onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ProductDetailPage(product: item.product, isAdmin: false,)));
-                  },
-                  child: ListTile(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ProductDetailPage(
+                                      product: item.product,
+                                      isAdmin: false,
+                                    )));
+                      },
+                      child: ListTile(
                         leading: Image.network(
                           item.product.imageUrl,
                           width: 50,
                           height: 50,
-                          errorBuilder: (context, error, stackTrace) => Container(
+                          errorBuilder: (context, error, stackTrace) =>
+                              Container(
                             width: 50,
                             height: 50,
                             color: Colors.grey[200],
@@ -92,18 +100,28 @@ class OrderCart extends StatelessWidget {
                         ),
                         title: Text(
                           item.product.name,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.inter(),
                         ),
                         subtitle: Text(
                           "${NumberFormat('#,###').format(item.price)} so'm",
                           style: GoogleFonts.inter(),
                         ),
-                        trailing: Text(
-                          "${NumberFormat('#,###').format(item.price * item.quantity)} so'm",
-                          style: GoogleFonts.inter(),
+                        trailing: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("${item.quantity} dona",
+                                style: GoogleFonts.inter()),
+                            const SizedBox(height: 4),
+                            Text(
+                              "${NumberFormat('#,###').format(item.price * item.quantity)} so'm",
+                              style: GoogleFonts.inter(),
+                            ),
+                          ],
                         ),
                       ),
-                ))
+                    ))
                 .toList(),
             const SizedBox(height: 16),
             if (order.status == OrderStatus.pending)
@@ -144,7 +162,8 @@ class OrderCart extends StatelessWidget {
             onPressed: () async {
               final orderProvider =
                   Provider.of<OrderProvider>(context, listen: false);
-              await orderProvider.updateOrderStatus(orderId, OrderStatus.cancelled);
+              await orderProvider.updateOrderStatus(
+                  orderId, OrderStatus.cancelled);
               Navigator.pop(context);
             },
             child: const Text('Ha, bekor qilish',

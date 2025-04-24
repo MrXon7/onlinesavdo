@@ -101,15 +101,25 @@ class AdmOrderCart extends StatelessWidget {
                       ),
                       title: Text(
                         item.product.name,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                         style: GoogleFonts.inter(),
                       ),
                       subtitle: Text(
                         "${NumberFormat('#,###').format(item.price)} so'm",
                         style: GoogleFonts.inter(),
                       ),
-                      trailing: Text(
-                        "${NumberFormat('#,###').format(item.price * item.quantity)} so'm",
-                        style: GoogleFonts.inter(),
+                      trailing: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("${item.quantity} dona",
+                              style: GoogleFonts.inter()),
+                          const SizedBox(height: 4),
+                          Text(
+                            "${NumberFormat('#,###').format(item.price * item.quantity)} so'm",
+                            style: GoogleFonts.inter(),
+                          ),
+                        ],
                       ),
                     ))
                 .toList(),
@@ -199,7 +209,7 @@ class AdmOrderCart extends StatelessWidget {
               ),
             ),
           ),
-        if(order.status == OrderStatus.delivred)
+        if (order.status == OrderStatus.delivred)
           ElevatedButton(
             onPressed: () =>
                 _updateStatus(context, order, OrderStatus.cancelled),

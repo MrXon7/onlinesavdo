@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:online_savdo/core/constants/colors.dart';
 import 'package:online_savdo/data/models/product_model.dart';
 import 'package:online_savdo/presentation/pages/admin_pages/editProductScreen.dart';
@@ -30,7 +29,7 @@ class ProductsScreen extends StatelessWidget {
         onPressed: () {
           // Navigate to add product screen
           Navigator.push(
-              context, MaterialPageRoute(builder: (_) => EditProductScreen(product:Product(id: "", name: "", description: "", price: 0, imageUrl: "", categorie: ""),)));
+              context, MaterialPageRoute(builder: (_) => EditProductScreen(product:Product(id: "", name: "", description: "", price: 0, imageUrl: "", categorie: "", discount: 0),)));
         },
         backgroundColor: SweetShopColors.error,
         child: const Icon(Icons.add, color: Colors.white),

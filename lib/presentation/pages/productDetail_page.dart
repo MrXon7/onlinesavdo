@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:online_savdo/core/constants/colors.dart';
 import 'package:online_savdo/data/models/product_model.dart';
-import 'package:online_savdo/presentation/pages/cart_page.dart';
 import 'package:online_savdo/presentation/pages/main_screen.dart';
 import 'package:online_savdo/presentation/providers/auth_provider.dart';
 import 'package:online_savdo/presentation/providers/cart_provider.dart';
@@ -97,46 +96,55 @@ class ProductDetailPage extends StatelessWidget {
               child: Row(
                 children: [
                   if (cart.shouldShowCartButton(product.id))
-                                      Expanded(
-                                        child: Row(
-                                          children: [
-                                            Expanded(
-                                              child: SizedBox(
-                                                height: 50,
-                                                child: ElevatedButton(
-                                                  onPressed: () {
-                                                    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => MainScreen(initialIndex: 2,)) , (route) => false);
-                                                  },
-                                                  style: ElevatedButton.styleFrom(
-                                                      backgroundColor: SweetShopColors.accent,
-                                                      minimumSize: const Size(double.infinity, 50),
-                                                      shape: RoundedRectangleBorder(
-                                                          borderRadius: BorderRadius.circular(12))),
-                                                  child: Row(
-                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                    children: [
-                                                      Icon(
-                                                        Icons.shopping_cart,
-                                                        color: Colors.white,
-                                                      ),
-                                                      Text(
-                                                        " O'tish",
-                                                        style: GoogleFonts.inter(
-                                                            fontSize: 18,
-                                                            color: Colors.white,
-                                                            fontWeight: FontWeight.bold),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                             SizedBox(width: 10),
-                                          ],
-                                        ),
-                                      ),
+                    Expanded(
+                      flex: 2,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: SizedBox(
+                              height: 50,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => MainScreen(
+                                                initialIndex: 2,
+                                              )),
+                                      (route) => false);
+                                },
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: SweetShopColors.accent,
+                                    minimumSize:
+                                        const Size(double.infinity, 50),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(12))),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.shopping_cart,
+                                      color: Colors.white,
+                                    ),
+                                    Text(
+                                      " O'tish",
+                                      style: GoogleFonts.inter(
+                                          fontSize: 16,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 8),
+                        ],
+                      ),
+                    ),
                   Expanded(
-                    flex: 2,
+                    flex: 3,
                     child: SizedBox(
                       height: 50,
                       child: ElevatedButton(
@@ -161,22 +169,22 @@ class ProductDetailPage extends StatelessWidget {
                         child: cart.isLoading
                             ? Center(
                                 child: SizedBox(
-                                  height: 15,
-                                  width: 15,
-                                  child: CircularProgressIndicator(
-                                    color: Colors.white,
-                                  ),
-                                ))
+                                height: 15,
+                                width: 15,
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                ),
+                              ))
                             : Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Icon(Icons.add_shopping_cart,
                                       color: Colors.white),
-                                  const SizedBox(width: 8),
+                                  const SizedBox(width: 2),
                                   Text(
                                     "Savatga qo'shish",
                                     style: GoogleFonts.inter(
-                                        fontSize: 18,
+                                        fontSize: 16,
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold),
                                   ),

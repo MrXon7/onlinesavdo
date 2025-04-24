@@ -11,6 +11,7 @@ class EditProductScreen extends StatelessWidget {
   EditProductScreen({super.key, required this.product});
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
+  final TextEditingController _discountController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _categoryController = TextEditingController();
   final _imageUrlController = TextEditingController();
@@ -20,6 +21,7 @@ class EditProductScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     _nameController.text = product.name;
     _priceController.text = product.price.toString();
+    _discountController.text = product.discount.toString();
     _descriptionController.text = product.description;
     _categoryController.text = product.categorie;
     _imageUrlController.text = product.imageUrl;
@@ -38,6 +40,7 @@ class EditProductScreen extends StatelessWidget {
               name: _nameController.text,
               description: _descriptionController.text,
               price: double.parse(_priceController.text),
+              discount: double.parse(_discountController.text),
               imageUrl: _imageUrlController.text,
               categorie: _categoryController.text,
             ),
@@ -52,6 +55,7 @@ class EditProductScreen extends StatelessWidget {
               name: _nameController.text,
               description: _descriptionController.text,
               price: double.parse(_priceController.text),
+              discount: double.parse(_discountController.text),
               imageUrl: _imageUrlController.text,
               categorie: _categoryController.text,
             ),
@@ -147,6 +151,24 @@ class EditProductScreen extends StatelessWidget {
                   if (double.parse(value) <= 0) {
                     return '0 da yuqori qiymat kiriting.';
                   }
+                  return null;
+                },
+              ),
+              SizedBox(height: 16),
+              TextFormField(
+                controller: _discountController,
+                decoration: InputDecoration(
+                    labelText: 'Chegirma', border: OutlineInputBorder()),
+                textInputAction: TextInputAction.next,
+                keyboardType: TextInputType.number,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Iltimos mahsulot narxini kiriting.';
+                  }
+                  if (double.tryParse(value) == null) {
+                    return 'Iltimos faqat raqam kiriting.';
+                  }
+                  
                   return null;
                 },
               ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:online_savdo/core/constants/colors.dart';
+import 'package:online_savdo/data/models/product_model.dart';
+import 'package:online_savdo/presentation/pages/productDetail_page.dart';
 import 'package:online_savdo/presentation/providers/auth_provider.dart';
 import 'package:online_savdo/presentation/providers/cart_provider.dart';
 import 'package:online_savdo/presentation/providers/order_provider.dart';
@@ -21,16 +23,17 @@ class _HomePageState extends State<HomePage> {
   // agar satefull widgetga o'tkazilsa quyidagini almashtirish
   final ValueNotifier<int> _currentPage = ValueNotifier<int>(0);
 
-
   @override
   void initState() {
     // TODO: implement initState
 
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final authProvider=Provider.of<AuthProvider>(context, listen: false);
-      Provider.of<CartProvider>(context, listen: false).fetchCartItems(authProvider.telegramId!);
-      Provider.of<OrderProvider>(context, listen: false).fetchOrders(authProvider.telegramId!);
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+      Provider.of<CartProvider>(context, listen: false)
+          .fetchCartItems(authProvider.telegramId!);
+      Provider.of<OrderProvider>(context, listen: false)
+          .fetchOrders(authProvider.telegramId!);
     });
   }
 
@@ -41,16 +44,16 @@ class _HomePageState extends State<HomePage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<ProductProvider>(context, listen: false).fetchPrducts();
       final authProvider = Provider.of<AuthProvider>(context, listen: false);
-      Provider.of<UserProvider>(context, listen: false).loadUserData(authProvider.telegramId!);
+      Provider.of<UserProvider>(context, listen: false)
+          .loadUserData(authProvider.telegramId!);
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
     final user = userProvider.user;
-    if(user == null) {
+    if (user == null) {
       return const Center(
         child: CircularProgressIndicator(
           color: SweetShopColors.accent,
@@ -64,7 +67,7 @@ class _HomePageState extends State<HomePage> {
           'Salom ${user.name}',
           style: GoogleFonts.inter(
             color: SweetShopColors.textDark,
-            fontSize: 32.0,
+            fontSize: 28.0,
             fontWeight: FontWeight.w900, // Maximum qalinlik
           ),
         ),
@@ -75,10 +78,7 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildDealsHeader(),
-              const SizedBox(height: 16),
               _buildDealsList(context),
-              const SizedBox(height: 24),
               _buildRecommendedHeader(),
               const SizedBox(height: 16),
               _buildRecommendedProducts(),
@@ -101,66 +101,59 @@ class _HomePageState extends State<HomePage> {
             color: SweetShopColors.textDark,
           ),
         ),
-        TextButton(
-          onPressed: () {},
-          child: const Text('See all'),
-        ),
+        // TextButton(
+        //   onPressed: () {},
+        //   child: const Text('See all'),
+        // ),
       ],
     );
   }
 
 // chegirma cardlari
   Widget _buildDealsList(BuildContext context) {
-    List<Widget> DealItems = [
-      _buildDealItem(
-          'RODE PodMic',
-          'Dynamic microphone, Speaker microphone',
-          '\$108.20',
-          '\$199.99',
-          'https://png.pngtree.com/png-vector/20231019/ourmid/pngtree-traditional-indian-mithai-png-image_10212114.png',
-          context),
-      _buildDealItem(
-          'Another Product',
-          'Product description',
-          '\$89.99',
-          '\$129.99',
-          'https://png.pngtree.com/png-vector/20231019/ourmid/pngtree-traditional-indian-mithai-png-image_10212114.png',
-          context),
-      _buildDealItem(
-          'Boshqa Product',
-          'Product description',
-          '\$89.99',
-          '\$129.99',
-          'https://png.pngtree.com/png-vector/20231019/ourmid/pngtree-traditional-indian-mithai-png-image_10212114.png',
-          context),
-    ];
+    final productProvider = Provider.of<ProductProvider>(context);
+    final products = productProvider.products;
+    // Chegirma kartalarini yaratish uchun List<Widget> ga o'tkazamiz
+    List<Widget> DealItems = products
+        .map((product) {
+          if (product.discount > 0) {
+            return _buildDealItem(product, context);
+          }
+          return null; // Agar chegirma bo'lmasa, bo'sh widget qaytaramiz
+        })
+        .whereType<Widget>()
+        .toList();
 
-    return SizedBox(
-      height: MediaQuery.of(context).size.width * 0.47,
-      child: Column(
-        children: [
-          Expanded(
-            child: PageView(
-              controller: _pageController,
-              onPageChanged: (index) {
-                _currentPage.value = index;
-              },
-              children: DealItems,
+    return DealItems.length > 0
+        ? SizedBox(
+            height: MediaQuery.of(context).size.width * 0.6,
+            child: Column(
+              children: [
+                _buildDealsHeader(),
+                const SizedBox(height: 6),
+                Expanded(
+                  child: PageView(
+                    controller: _pageController,
+                    onPageChanged: (index) {
+                      _currentPage.value = index;
+                    },
+                    children: DealItems,
+                  ),
+                ),
+                ValueListenableBuilder(
+                    valueListenable: _currentPage,
+                    builder: (context, currentPage, _) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: List.generate(
+                            DealItems.length, // Kartalar soni
+                            (index) => _buildIndicator(index == currentPage)),
+                      );
+                    }),
+              ],
             ),
-          ),
-          ValueListenableBuilder(
-              valueListenable: _currentPage,
-              builder: (context, currentPage, _) {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: List.generate(
-                      DealItems.length, // Kartalar soni
-                      (index) => _buildIndicator(index == currentPage)),
-                );
-              })
-        ],
-      ),
-    );
+          )
+        : const SizedBox();
   }
 
 // Chegirma cart indicatori
@@ -178,83 +171,102 @@ class _HomePageState extends State<HomePage> {
   }
 
 // Chegirma cart itemi
-  Widget _buildDealItem(String title, String description, String currentPrice,
-      String originalPrice, String imageUrl, BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(8.0),
-      decoration: BoxDecoration(
-        color: SweetShopColors.candyColor,
-        borderRadius: BorderRadius.circular(12),
+  Widget _buildDealItem(Product product, BuildContext context) {
+    return GestureDetector(
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ProductDetailPage(
+            product: product,
+            isAdmin: false,
+          ),
+        ),
       ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: //Image(image: NetworkImage(imageUrl))
-                  Image.network(
-                imageUrl,
-                width: double.infinity,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) => Container(
-                  height: 120,
-                  color: Colors.grey[200],
-                  child: const Icon(Icons.image),
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+        decoration: BoxDecoration(
+          color: SweetShopColors.candyColor,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              flex: 2,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: //Image(image: NetworkImage(imageUrl))
+                    Image.network(
+                  product.imageUrl,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) => Container(
+                    height: 120,
+                    color: Colors.grey[200],
+                    child: const Icon(Icons.image),
+                  ),
                 ),
               ),
             ),
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    title,
-                    style: GoogleFonts.inter(
-                      fontWeight: FontWeight.bold,
-                      color: SweetShopColors.textDark,
-                      fontSize: MediaQuery.of(context).size.width * 0.045,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    description,
-                    style: GoogleFonts.inter(
-                      fontSize: MediaQuery.of(context).size.width * 0.025,
-                      color: SweetShopColors.textGrey,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    children: [
-                      Text(
-                        currentPrice,
-                        style: GoogleFonts.inter(
-                          fontWeight: FontWeight.bold,
-                          fontSize: MediaQuery.of(context).size.width * 0.035,
-                          color: SweetShopColors.primary,
-                        ),
+            Expanded(
+              flex: 3,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      product.name,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: GoogleFonts.inter(
+                        fontWeight: FontWeight.bold,
+                        color: SweetShopColors.textDark,
+                        fontSize: MediaQuery.of(context).size.width * 0.045,
                       ),
-                      const SizedBox(width: 8),
-                      Text(
-                        originalPrice,
-                        style: GoogleFonts.inter(
-                          fontSize: MediaQuery.of(context).size.width * 0.035,
-                          decoration: TextDecoration.lineThrough,
-                          color: Colors.grey[800],
-                        ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      product.description,
+                      maxLines: 4,
+                      overflow: TextOverflow.ellipsis,
+                      style: GoogleFonts.inter(
+                        fontSize: MediaQuery.of(context).size.width * 0.025,
+                        color: SweetShopColors.textGrey,
                       ),
-                    ],
-                  ),
-                ],
+                    ),
+                    const SizedBox(height: 8),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          "${(product.discount + product.price)} so'm",
+                          overflow: TextOverflow.ellipsis,
+                          style: GoogleFonts.inter(
+                            fontSize: MediaQuery.of(context).size.width * 0.036,
+                            decoration: TextDecoration.lineThrough,
+                            color: Colors.grey[800],
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          "${product.price} so'm",
+                          overflow: TextOverflow.ellipsis,
+                          style: GoogleFonts.inter(
+                            fontWeight: FontWeight.bold,
+                            fontSize: MediaQuery.of(context).size.width * 0.038,
+                            color: SweetShopColors.primary,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

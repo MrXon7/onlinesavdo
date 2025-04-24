@@ -26,22 +26,24 @@ class ProductCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                color: SweetShopColors.cakeColor),
-            child: ClipRRect(
-              borderRadius: const BorderRadius.all(Radius.circular(15)),
-              child: Image.network(
-                product.imageUrl,
-                height: 170,
-                width: double.infinity,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) => Container(
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: SweetShopColors.cakeColor),
+              child: ClipRRect(
+                borderRadius: const BorderRadius.all(Radius.circular(15)),
+                child: Image.network(
+                  product.imageUrl,
                   height: 170,
                   width: double.infinity,
-                  color: Colors.grey[400],
-                  child: const Icon(Icons.image),
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) => Container(
+                    height: 170,
+                    width: double.infinity,
+                    color: Colors.grey[400],
+                    child: const Icon(Icons.image),
+                  ),
                 ),
               ),
             ),
@@ -53,6 +55,7 @@ class ProductCard extends StatelessWidget {
               children: [
                 Text(
                   product.name,
+                  overflow: TextOverflow.ellipsis,
                   style: GoogleFonts.inter(
                       fontWeight: FontWeight.bold,
                       fontSize: 18 // Maximum qalinlik
@@ -68,7 +71,8 @@ class ProductCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  '${product.price.toStringAsFixed(2)} so\'m',
+                  '${product.price} so\'m',
+                  overflow: TextOverflow.ellipsis,
                   style: GoogleFonts.inter(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
