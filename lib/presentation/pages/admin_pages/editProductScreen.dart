@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:online_savdo/core/constants/colors.dart';
+import 'package:online_savdo/data/models/image_model.dart';
 import 'package:online_savdo/data/models/product_model.dart';
+import 'package:online_savdo/presentation/providers/image_provider.dart';
 import 'package:online_savdo/presentation/providers/product_provider.dart';
 import 'package:provider/provider.dart';
-import 'dart:io';
 
+// ignore: must_be_immutable
 class EditProductScreen extends StatelessWidget {
   final Product product;
-  EditProductScreen({super.key, required this.product});
+  EditProductScreen({super.key, required this.product,} );
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _discountController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _categoryController = TextEditingController();
-  final _imageUrlController = TextEditingController();
+  late ImageBB _imageController=product.image;
   final _form = GlobalKey<FormState>();
 
   @override
@@ -24,8 +26,8 @@ class EditProductScreen extends StatelessWidget {
     _discountController.text = product.discount.toString();
     _descriptionController.text = product.description;
     _categoryController.text = product.categorie;
-    _imageUrlController.text = product.imageUrl;
-    
+
+    final imgProvider = Provider.of<ImageBBProvider>(context);
     Future<void> saveForm() async {
       if (!_form.currentState!.validate()) {
         return;
@@ -34,6 +36,7 @@ class EditProductScreen extends StatelessWidget {
       try {
         if (product.id.isEmpty) {
           // Yangi mahsulot qo'shish
+          
           await Provider.of<ProductProvider>(context, listen: false).addProduct(
             Product(
               id: DateTime.now().millisecondsSinceEpoch.toString(),
@@ -41,7 +44,7 @@ class EditProductScreen extends StatelessWidget {
               description: _descriptionController.text,
               price: double.parse(_priceController.text),
               discount: double.parse(_discountController.text),
-              imageUrl: _imageUrlController.text,
+              image: _imageController,
               categorie: _categoryController.text,
             ),
             // Add the second required argument here
@@ -56,26 +59,24 @@ class EditProductScreen extends StatelessWidget {
               description: _descriptionController.text,
               price: double.parse(_priceController.text),
               discount: double.parse(_discountController.text),
-              imageUrl: _imageUrlController.text,
+              image:  _imageController,
               categorie: _categoryController.text,
             ),
           );
         }
-        print("IMAGE URL: ${_imageUrlController.text}");
 
 // Controllerlarni tozalash
         _nameController.clear();
         _priceController.clear();
         _descriptionController.clear();
         _categoryController.clear();
-        _imageUrlController.clear();
         Navigator.of(context).pop();
       } catch (error) {
         await showDialog(
           context: context,
           builder: (ctx) => AlertDialog(
-            title: Text('An error occurred!'),
-            content: Text('Something went wrong.'),
+            title: Text('Xatolik yuz berdi!'),
+            content: Text('Nimadir xato ketdi.'),
             actions: [
               TextButton(
                 child: Text('Okay'),
@@ -89,15 +90,33 @@ class EditProductScreen extends StatelessWidget {
       } finally {}
     }
 
-    Future<void> _pickImage() async {
-      final picker = ImagePicker();
-      final pickedImage = await picker.pickImage(
-        source: ImageSource.gallery,
-        imageQuality: 80,
-      );
-      if (pickedImage != null) {
-        _imageUrlController.text = File(pickedImage.path).toString();
+    Future<void> pickImage() async {
+      final image = await imgProvider.pickImage();
+      if (image == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: SweetShopColors.error,
+            content: Text(
+              'Rasm yuklanmagan',
+              style: TextStyle(color: Colors.white),
+            ),
+            duration: Duration(seconds: 2),
+          ),
+        );
+        return;
       }
+      await imgProvider.uploadImage(await image.readAsBytes(), image.name);
+      _imageController = imgProvider.images!;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: SweetShopColors.accent,
+          content: Text(
+            'Rasm Yuklandi',
+            style: TextStyle(color: Colors.white),
+          ),
+          duration: Duration(seconds: 2),
+        ),
+      );
     }
 
     return Scaffold(
@@ -110,29 +129,53 @@ class EditProductScreen extends StatelessWidget {
         actions: [
           IconButton(
             icon: Icon(Icons.save),
-            onPressed: saveForm,
+            onPressed: () => saveForm(),
           ),
         ],
       ),
-      body: Padding(
+      body:  Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _form,
           child: ListView(
             children: [
+              GestureDetector(
+                onTap: pickImage,
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 300,
+
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 1, color: Colors.grey),
+                  ),
+                  // ignore: unnecessary_null_comparison
+                  child: product.image == null || product.image.url.isEmpty
+                      ? Center(
+                          child: Icon(Icons.image,
+                              size: 50, color: Colors.grey[700]),
+                        )
+                      : FittedBox(
+                          child: //Text(imgProvider.images!.url),
+                              Image.network(
+                            _imageController.url,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                ),
+              ),
+              SizedBox(height: 16),
+
               TextFormField(
                 controller: _nameController,
                 decoration: InputDecoration(
                     labelText: 'Nomi', border: OutlineInputBorder()),
                 textInputAction: TextInputAction.next,
-
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'Mahsulot nomini kiriting.';
                   }
                   return null;
                 },
-               
               ),
               SizedBox(height: 16),
               TextFormField(
@@ -168,7 +211,7 @@ class EditProductScreen extends StatelessWidget {
                   if (double.tryParse(value) == null) {
                     return 'Iltimos faqat raqam kiriting.';
                   }
-                  
+
                   return null;
                 },
               ),
@@ -230,35 +273,6 @@ class EditProductScreen extends StatelessWidget {
               //     );
               //   },
               // ),
-              SizedBox(height: 16),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  GestureDetector(
-                    onTap: _pickImage,
-                    child: Container(
-                      width: 100,
-                      height: 100,
-                      margin: EdgeInsets.only(top: 8, right: 10),
-                      decoration: BoxDecoration(
-                        border: Border.all(width: 1, color: Colors.grey),
-                      ),
-                      child: _imageUrlController.text.isEmpty
-                          ? Center(
-                              child: Icon(Icons.image,
-                                  size: 50, color: Colors.grey[700]),
-                            )
-                          : FittedBox(
-                              child: Text(_imageUrlController.text),
-                              // Image.network(
-                              //   _imageUrlController.text,
-                              //   fit: BoxFit.cover,
-                              // ),
-                            ),
-                    ),
-                  ),
-                ],
-              ),
             ],
           ),
         ),

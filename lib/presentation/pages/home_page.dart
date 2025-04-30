@@ -197,11 +197,10 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.all(8.0),
                 child: //Image(image: NetworkImage(imageUrl))
                     Image.network(
-                  product.imageUrl,
+                  product.image.url,
                   width: double.infinity,
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) => Container(
-                    height: 120,
                     color: Colors.grey[200],
                     child: const Icon(Icons.image),
                   ),

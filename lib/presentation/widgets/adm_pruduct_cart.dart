@@ -36,7 +36,7 @@ class Adm_product_cart extends StatelessWidget {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(8),
                         child: Image.network(
-                          product.imageUrl,
+                          product.image.url,
                           width: 80,
                           height: 80,
                           fit: BoxFit.cover,

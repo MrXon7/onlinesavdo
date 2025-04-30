@@ -62,7 +62,7 @@ class CartProvider with ChangeNotifier {
               price: item['product']['price'],
               discount: item['product']['discount'],
               description: item['product']['description'],
-              imageUrl: item['product']['imageUrl'],
+              image: item['product']['image'].url,
               categorie: item['product']['categorie'],
             ),
             quantity: item['quantity'],

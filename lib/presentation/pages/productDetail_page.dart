@@ -40,7 +40,7 @@ class ProductDetailPage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(25)),
               child: ClipRRect(
                 child: Image.network(
-                  product.imageUrl,
+                  product.image.url,
                   height: 370,
                   width: double.infinity,
                   fit: BoxFit.cover,

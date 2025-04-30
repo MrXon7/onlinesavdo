@@ -1,10 +1,12 @@
+import 'package:online_savdo/data/models/image_model.dart';
+
 class Product {
   final String id;
   final String name;
   final String description;
   final double price;
   final double discount;
-  final String imageUrl;
+  final ImageBB image;
   final String categorie;
 
   Product({
@@ -13,7 +15,7 @@ class Product {
     required this.description,
     required this.price,
     required this.discount,
-    required this.imageUrl,
+    required this.image,
     required this.categorie,
   });
 
@@ -25,7 +27,7 @@ class Product {
       description: json['description'],
       price: json['price'].toDouble(),
       discount: json['discount'].toDouble(),
-      imageUrl: json['imageUrl'],
+      image: ImageBB.fromJson(json['image']),
       categorie: json['categorie'],
     );
   }
@@ -38,7 +40,7 @@ class Product {
       'description': description,
       'price': price,
       'discount': discount,
-      'imageUrl': imageUrl,
+      'image': image.toJson(),
       'categorie': categorie,
     };
   }

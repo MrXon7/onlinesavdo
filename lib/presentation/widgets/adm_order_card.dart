@@ -89,7 +89,7 @@ class AdmOrderCart extends StatelessWidget {
                                     isAdmin: true,
                                   ))),
                       leading: Image.network(
-                        item.product.imageUrl,
+                        item.product.image.url,
                         width: 50,
                         height: 50,
                         errorBuilder: (context, error, stackTrace) => Container(

@@ -87,7 +87,7 @@ class OrderCart extends StatelessWidget {
                       },
                       child: ListTile(
                         leading: Image.network(
-                          item.product.imageUrl,
+                          item.product.image.url,
                           width: 50,
                           height: 50,
                           errorBuilder: (context, error, stackTrace) =>

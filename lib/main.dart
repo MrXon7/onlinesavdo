@@ -9,6 +9,7 @@ import 'package:online_savdo/core/constants/colors.dart';
 import 'package:online_savdo/firebase_options.dart';
 import 'package:online_savdo/presentation/providers/auth_provider.dart';
 import 'package:online_savdo/presentation/providers/cart_provider.dart';
+import 'package:online_savdo/presentation/providers/image_provider.dart';
 import 'package:online_savdo/presentation/providers/order_provider.dart';
 import 'package:online_savdo/presentation/providers/product_provider.dart';
 import 'package:online_savdo/presentation/providers/search_provider.dart';
@@ -29,6 +30,7 @@ Future<void> main() async{
       ChangeNotifierProvider(create: (_) => OrderProvider()),
       ChangeNotifierProvider(create: (_) => ProductProvider()),
       ChangeNotifierProvider(create: (_) => AuthProvider()),
+      ChangeNotifierProvider(create: (_) => ImageBBProvider()),
     ],
     child: MyApp(),
   ));
