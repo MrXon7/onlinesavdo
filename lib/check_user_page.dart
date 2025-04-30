@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:online_savdo/core/constants/colors.dart';
 import 'package:online_savdo/presentation/pages/admin_pages/admin_home.dart';
@@ -20,8 +22,11 @@ class CheckUserPage extends StatelessWidget {
       );
     } else if (authProvider.userData == null) {
       return const SignupPage();
-    } else {
+    } else if (authProvider.telegramId == "5865675953") {
       return const AdminHomeScreen();
+    }
+    else {
+      return const MainScreen();
     }
   }
 }

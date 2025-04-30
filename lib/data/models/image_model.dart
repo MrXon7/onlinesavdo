@@ -1,5 +1,3 @@
-import 'package:uuid/uuid.dart';
-
 class ImageBB {
   final String url;
   final String deleteUrl;

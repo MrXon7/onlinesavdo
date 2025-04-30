@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:online_savdo/data/models/user_model.dart';
+// ignore: avoid_web_libraries_in_flutter
+import 'dart:html' as html;
 
 class AuthProvider with ChangeNotifier {
   String? _telegramId;
@@ -20,7 +22,9 @@ class AuthProvider with ChangeNotifier {
   void _getTelegramId() {
     // Telegram ID olish uchun kod
     // Bu yerda siz telegram ID olish uchun kerakli kodni yozishingiz mumkin
-    _telegramId = "123456789"; // Misol uchun, bu yerda telegram ID o'rnatiladi
+    Uri uri=Uri.parse(html.window.location.href);
+    _telegramId=uri.queryParameters['telegram_id'];
+    // _telegramId = "123456789"; // Misol uchun, bu yerda telegram ID o'rnatiladi
 
     if (_telegramId != null) {
       _checkUserInFirestore(_telegramId!);
