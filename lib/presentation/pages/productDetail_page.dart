@@ -36,7 +36,7 @@ class ProductDetailPage extends StatelessWidget {
             //product rasmi
             Container(
               decoration: BoxDecoration(
-                  color: SweetShopColors.cakeColor,
+                  color: SweetShopColors.textLight,
                   borderRadius: BorderRadius.circular(25)),
               child: ClipRRect(
                 child: Image.network(

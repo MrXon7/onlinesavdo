@@ -30,7 +30,7 @@ class ProductCard extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
-                  color: SweetShopColors.cakeColor),
+                  color: SweetShopColors.textLight),
               child: ClipRRect(
                 borderRadius: const BorderRadius.all(Radius.circular(15)),
                 child: Image.network(
