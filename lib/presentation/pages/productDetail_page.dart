@@ -6,7 +6,6 @@ import 'package:online_savdo/presentation/pages/main_screen.dart';
 import 'package:online_savdo/presentation/providers/auth_provider.dart';
 import 'package:online_savdo/presentation/providers/cart_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:share_plus/share_plus.dart';
 
 class ProductDetailPage extends StatelessWidget {
   final Product product;
@@ -14,20 +13,20 @@ class ProductDetailPage extends StatelessWidget {
   const ProductDetailPage(
       {super.key, required this.product, required this.isAdmin});
 
-// Mahsulot havolasini yaratish
+// // Mahsulot havolasini yaratish
  
-  String _generateProductUrl(BuildContext context) {
-    return "https://t.me/esavdobot?startapp=web_app/#/product/${product.id}";
-  }
+//   String _generateProductUrl(BuildContext context) {
+//     return "https://t.me/esavdobot?startapp=web_app/#/product/${product.id}";
+//   }
 
-// Share tugmasi bosilganda ishlaydi
-  Future<void> _shareProduct(BuildContext context) async {
-    final String ProductUrl = _generateProductUrl(context);
-    await Share.share(
-      "$ProductUrl",
-      subject: "Mahsulot havolasi",
-    );
-  }
+// // Share tugmasi bosilganda ishlaydi
+//   Future<void> _shareProduct(BuildContext context) async {
+//     final String ProductUrl = _generateProductUrl(context);
+//     await Share.share(
+//       "$ProductUrl",
+//       subject: "Mahsulot havolasi",
+//     );
+//   }
 
   @override
   Widget build(BuildContext context) {
@@ -43,14 +42,14 @@ class ProductDetailPage extends StatelessWidget {
             fontWeight: FontWeight.bold, // Maximum qalinlik
           ),
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.share),
-            onPressed: () {
-              _shareProduct(context);
-            },
-          ),
-        ],
+        // actions: [
+        //   IconButton(
+        //     icon: const Icon(Icons.share),
+        //     onPressed: () {
+        //       _shareProduct(context);
+        //     },
+        //   ),
+        // ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(12.0),

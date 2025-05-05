@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:online_savdo/data/models/order_model.dart';
@@ -130,6 +131,18 @@ class AdmOrderCart extends StatelessWidget {
     );
   }
 
+  void sendMessageToTelegram(String message, String userId) async {
+    try {
+      String token = '7416574751:AAGPHQhAvMOSX1IS0Qu7pUBzCXr81GgkLnU';
+      String url =
+          'https://api.telegram.org/bot$token/sendMessage?chat_id=$userId&text=$message';
+      final response = await Dio().post(url);
+      print(response);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Widget _buildStatusAction(BuildContext context, MyOrder order) {
     return Wrap(
       spacing: 4.0,
@@ -142,6 +155,9 @@ class AdmOrderCart extends StatelessWidget {
               ElevatedButton(
                 onPressed: () {
                   _updateStatus(context, order, OrderStatus.processing);
+                  sendMessageToTelegram(
+                      "Hurmatli mijoz sizning ${order.id} raqamli buyurtmangiz qabul qilindi",
+                      order.customer['id']);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green,
@@ -158,8 +174,12 @@ class AdmOrderCart extends StatelessWidget {
               ),
               SizedBox(width: 8),
               ElevatedButton(
-                onPressed: () =>
-                    _updateStatus(context, order, OrderStatus.cancelled),
+                onPressed: () {
+                  _updateStatus(context, order, OrderStatus.cancelled);
+                  sendMessageToTelegram(
+                      "Hurmatli mijoz sizning ${order.id} raqamli buyurtmangiz rad etildi",
+                      order.customer['id']);
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.red,
                 ),
@@ -177,7 +197,12 @@ class AdmOrderCart extends StatelessWidget {
         // Buyurtmani jo'natish
         if (order.status == OrderStatus.processing)
           ElevatedButton(
-            onPressed: () => _updateStatus(context, order, OrderStatus.shipped),
+            onPressed: () {
+              _updateStatus(context, order, OrderStatus.shipped);
+              sendMessageToTelegram(
+                  "Hurmatli mijoz sizning ${order.id} raqamli buyurtmangiz jo'natildi",
+                  order.customer['id']);
+            },
             style: ElevatedButton.styleFrom(
               backgroundColor: order.statusColor,
             ),
@@ -194,8 +219,12 @@ class AdmOrderCart extends StatelessWidget {
         // Buyurtmani yetkazilganini tasdiqlash
         if (order.status == OrderStatus.shipped)
           ElevatedButton(
-            onPressed: () =>
-                _updateStatus(context, order, OrderStatus.delivred),
+            onPressed: () {
+              _updateStatus(context, order, OrderStatus.delivred);
+             sendMessageToTelegram(
+                      "Hurmatli mijoz sizning ${order.id} raqamli buyurtmangiz yetkazib berildi.\nBizni tanlaganingiz uchun tashakkur",
+                      order.customer['id']);
+            },
             style: ElevatedButton.styleFrom(
               backgroundColor: order.statusColor,
             ),

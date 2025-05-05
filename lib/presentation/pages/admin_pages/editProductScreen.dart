@@ -21,12 +21,14 @@ class EditProductScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if(product.id.isNotEmpty){
     _nameController.text = product.name;
     _priceController.text = product.price.toString();
     _discountController.text = product.discount.toString();
     _descriptionController.text = product.description;
     _categoryController.text = product.categorie;
-
+    }
+    
     final imgProvider = Provider.of<ImageBBProvider>(context);
     Future<void> saveForm() async {
       if (!_form.currentState!.validate()) {

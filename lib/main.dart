@@ -15,13 +15,27 @@ import 'package:online_savdo/presentation/providers/product_provider.dart';
 import 'package:online_savdo/presentation/providers/search_provider.dart';
 import 'package:online_savdo/presentation/providers/user_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:telegram_web_app/telegram_web_app.dart';
 
-Future<void> main() async{
-  // Initialize Firebase 
+Future<void> main() async {
+  try {
+    if (TelegramWebApp.instance.isSupported) {
+      TelegramWebApp.instance.ready();
+      Future.delayed(
+          const Duration(seconds: 1), TelegramWebApp.instance.expand);
+    }
+  } catch (e) {
+    print("Xatolik telegram web app yuklashda");
+    await Future.delayed(const Duration(microseconds: 200));
+    // main();
+    return;
+  }
+
+  // Initialize Firebase
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
-);
+  );
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (context) => SearchProvider()),
@@ -45,9 +59,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: AppConstants.appName,
       theme: ThemeData(
-        textTheme: GoogleFonts.interTextTheme(
-          Theme.of(context).textTheme
-        ),
+        textTheme: GoogleFonts.interTextTheme(Theme.of(context).textTheme),
         appBarTheme: AppBarTheme(
           backgroundColor: SweetShopColors.cardBackground,
           elevation: 0,

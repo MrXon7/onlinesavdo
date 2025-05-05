@@ -38,6 +38,7 @@ class _SignupPageState extends State<SignupPage> {
 
     void _regstruser() async {
       try {
+        
         final newuser = User(
             id: authProvider.telegramId!,
             name: _name!,
@@ -190,7 +191,7 @@ class _SignupPageState extends State<SignupPage> {
                                         const SizedBox(height: 32),
                                         ElevatedButton(
                                           style: ElevatedButton.styleFrom(
-                                            backgroundColor: Colors.pink,
+                                            backgroundColor: Colors.green,
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(8),
@@ -202,6 +203,12 @@ class _SignupPageState extends State<SignupPage> {
                                             if (_formKey.currentState!
                                                 .validate()) {
                                               _formKey.currentState!.save();
+                                              ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("${authProvider.telegramId} ID bilan ro'yxatdan o'tdingiz"),
+            duration: const Duration(seconds: 3),
+          ),
+        );
                                               _regstruser();
                                             }
                                           },

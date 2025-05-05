@@ -1,9 +1,11 @@
+// import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:online_savdo/data/models/user_model.dart';
-// ignore: avoid_web_libraries_in_flutter
-import 'dart:js' as js;
 
+import 'package:telegram_web_app/telegram_web_app.dart';
+// import 'dart:convert';
 
 class AuthProvider with ChangeNotifier {
   String? _telegramId;
@@ -21,18 +23,12 @@ class AuthProvider with ChangeNotifier {
   }
 
   void _getTelegramId() {
-try {
-    final tgWebApp = js.context['Telegram']['WebApp'];
-    _telegramId = tgWebApp['initDataUnsafe']['user']['id']?.toString();
-  } catch (e) {
-    return null;
-  }
-
-    // Telegram ID olish uchun kod
-    // Uri uri=Uri.parse(html.window.location.href);
-    // _telegramId=uri.queryParameters['telegram_id'];
-    // _telegramId = "123456789"; // Misol uchun, bu yerda telegram ID o'rnatiladi
-
+        // Telegram ID olish uchun kod
+    // final TelegramWebApp telegram = TelegramWebApp.instance;
+    // _telegramId = telegram.initData.user.id.toString();
+   
+    _telegramId = "5865675953"; // Misol uchun, bu yerda telegram ID o'rnatiladi
+     notifyListeners();
     if (_telegramId != null) {
       _checkUserInFirestore(_telegramId!);
     } else {
@@ -51,7 +47,6 @@ try {
           await FirebaseFirestore.instance.collection('users').doc(tgId).get();
       if (userDoc.exists) {
         _userData = User.fromJson(userDoc.data() as Map<String, dynamic>);
-       
       } else {
         _userData = null;
       }
