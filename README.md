@@ -1,16 +1,30 @@
-# online_savdo
+# Online Do'kon Ilovasi - Flutter va Provider
 
-A new Flutter project.
+![Flutter](https://img.shields.io/badge/Flutter-%2302569B.svg?style=for-the-badge&logo=Flutter&logoColor=white)
+![Provider](https://img.shields.io/badge/Provider-State%20Management-blue)
 
-## Getting Started
+Bu loyha Flutter framework'i va Provider state management yordamida yaratilgan online do'kon ilovasi.
 
-This project is a starting point for a Flutter application.
+## Loyha haqida
 
-A few resources to get you started if this is your first Flutter project:
+Bu ilova quyidagi imkoniyatlarga ega:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- Mahsulotlar katalogi
+- Savat funksiyasi
+- Buyurtmalar tarixi
+- Foydalanuvchi profili
+- Admin funksiyalari(mahsulot qo'shish va tahrirlash, buyurtmalarni boshqarish)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Texnologiyalar
+
+- **Flutter** - Cross-platform mobil ilova ishlab chiqish framework'i
+- **Provider** - State management yechimi
+- **Firebase** (agar ishlatilgan bo'lsa) - Backend va autentifikatsiya
+- **Dio** (agar ishlatilgan bo'lsa) - HTTP so'rovlari uchun
+
+
+## Muallif
+
+- Alixonov Ismoilxon
+- [GitHub profilingiz](https://github.com/MrXon7)
+- [LinkedIn](https://www.linkedin.com/in/ismoilxon-alixonov-94ba06361)
