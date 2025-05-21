@@ -19,8 +19,9 @@ Bu ilova quyidagi imkoniyatlarga ega:
 
 - **Flutter** - Cross-platform mobil ilova ishlab chiqish framework'i
 - **Provider** - State management yechimi
-- **Firebase** (agar ishlatilgan bo'lsa) - Backend va autentifikatsiya
-- **Dio** (agar ishlatilgan bo'lsa) - HTTP so'rovlari uchun
+- **Firebase**  - Backend
+- **Dio** - HTTP so'rovlari uchun
+- **TelegramAPI** -autentifikatsiya va foydalanuvchiga xabarlar yuborish uchun
 
 
 ## Muallif
